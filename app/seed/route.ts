@@ -1,5 +1,4 @@
 import bcrypt from 'bcrypt';
-// import { PostgresClient } from '@vercel/postgres';
 import { createClient } from '@vercel/postgres';
 import { invoices, customers, revenue, users } from '../lib/placeholder-data';
 
