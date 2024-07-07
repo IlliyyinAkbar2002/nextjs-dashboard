@@ -1,4 +1,5 @@
 import { sql } from '@vercel/postgres';
+// ...
 import {
   CustomerField,
   CustomersTableType,
@@ -9,6 +10,38 @@ import {
   Revenue,
 } from './definitions';
 import { formatCurrency } from './utils';
+
+// export async function fetchInvoiceStats() {
+//   try {
+//     const data = await sql`
+//       SELECT
+//         COUNT(*) AS total_invoices,
+//         SUM(CASE WHEN status = 'paid' THEN 1 ELSE 0 END) AS total_paid,
+//         SUM(CASE WHEN status = 'pending' THEN 1 ELSE 0 END) AS total_pending
+//       FROM invoices
+//     `;
+
+//     return data.rows[0];
+//   } catch (error) {
+//     console.error('Database Error:', error);
+//     throw new Error('Failed to fetch invoice stats.');
+//   }
+// }
+
+// export async function fetchCustomerStats() {
+//   try {
+//     const data = await sql`
+//       SELECT
+//         COUNT(*) AS total_customers
+//       FROM customers
+//     `;
+
+//     return data.rows[0];
+//   } catch (error) {
+//     console.error('Database Error:', error);
+//     throw new Error('Failed to fetch customer stats.');
+//   }
+// }
 
 export async function fetchRevenue() {
   // Add noStore() here to prevent the response from being cached.
