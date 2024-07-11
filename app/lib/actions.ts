@@ -1,10 +1,10 @@
 'use server';
- 
+
 import { z } from 'zod';
 import { sql } from '@vercel/postgres';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
- 
+
 const FormSchema = z.object({
   id: z.string(),
   customerId: z.string(),
@@ -12,11 +12,11 @@ const FormSchema = z.object({
   status: z.enum(['pending', 'paid']),
   date: z.string(),
 });
- 
+
 const CreateInvoice = FormSchema.omit({ id: true, date: true });
- 
+
 export async function createInvoice(formData: FormData) {
-    const { customerId, amount, status } = CreateInvoice.parse({
+  const { customerId, amount, status } = CreateInvoice.parse({
     customerId: formData.get('customerId'),
     amount: formData.get('amount'),
     status: formData.get('status'),
@@ -30,27 +30,26 @@ export async function createInvoice(formData: FormData) {
     VALUES (${customerId}, ${amountInCents}, ${status}, ${date})
   `;
   } catch (error) {
-    return{
+    return {
       message: 'An error occurred while creating the invoice',
     };
   }
-    revalidatePath('/dashboard/invoices');
-    redirect('/dashboard/invoices');
+  revalidatePath('/dashboard/invoices');
+  redirect('/dashboard/invoices');
 }
-
 
 // Use Zod to update the expected types
 const UpdateInvoice = FormSchema.omit({ id: true, date: true });
- 
+
 // ...
- 
+
 export async function updateInvoice(id: string, formData: FormData) {
   const { customerId, amount, status } = UpdateInvoice.parse({
     customerId: formData.get('customerId'),
     amount: formData.get('amount'),
     status: formData.get('status'),
   });
- 
+
   const amountInCents = amount * 100;
 
   try {
@@ -60,10 +59,10 @@ export async function updateInvoice(id: string, formData: FormData) {
     WHERE id = ${id}
   `;
   } catch (error) {
-    return{
+    return {
       message: 'An error occurred while updating the invoice',
     };
-  } 
+  }
   revalidatePath('/dashboard/invoices');
   redirect('/dashboard/invoices');
 }
@@ -72,13 +71,13 @@ export async function deleteInvoice(id: string) {
   throw new Error('Failed to Delete Invoice');
   try {
     await sql`DELETE FROM invoices WHERE id = ${id}`;
-    return{
+    return {
       message: 'Invoice deleted successfully',
     };
     revalidatePath('/dashboard/invoices');
-    }catch (error) {
-      return{
-        message: 'An error occurred while deleting the invoice',
+  } catch (error) {
+    return {
+      message: 'An error occurred while deleting the invoice',
     };
   }
 }

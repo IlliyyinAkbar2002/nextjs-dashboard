@@ -3,7 +3,7 @@ import CustomersTable from '@/app/ui/customers/table';
 
 export default async function Page() {
   const customers = await [];
-  const customer = await CustomersTable({customers});
+  const customer = await CustomersTable({ customers });
 
   return (
     <div>
